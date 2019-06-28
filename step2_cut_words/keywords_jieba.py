@@ -8,7 +8,10 @@ from jieba import analyse
 
 tfidf = analyse.extract_tags
 
-for line in open("data_full.dat"):
+fo = fo = open("data_keywords.dat", "w", encoding='utf-8')
+fo.close()
+
+for line in open("data_full.dat", encoding='utf-8'):
     
     text = line
 
@@ -21,8 +24,8 @@ for line in open("data_full.dat"):
         result.append(keyword)
 
     #print(result)
-    fo = open("data_keywords.dat", "a+")
-    
+    fo = open("data_keywords.dat", "a+", encoding='utf-8')
+
     for j in result:
           
         fo.write(j)

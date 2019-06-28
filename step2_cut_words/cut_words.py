@@ -17,13 +17,13 @@ jieba.load_userdict("dict_sougou_utf8.txt")
 jieba.load_userdict("dict_tencent_utf8.txt")
 jieba.load_userdict("my_dict.txt")
 
-stopwords = {}.fromkeys([ line.rstrip() for line in open('Stopword.txt') ])
+stopwords = {}.fromkeys([ line.rstrip() for line in open('Stopword.txt', encoding='utf-8')])
 
 def get_data(index_news):
     
     print("连接MySql数据库...")
     
-    db = pymysql.connect(host='127.0.0.1',port=3306,user='root',password='请输入自己的密码',db='2017_database',charset='utf8',cursorclass = pymysql.cursors.DictCursor)
+    db = pymysql.connect(host='127.0.0.1',port=3306,user='root',password='123456',db='comment_database',charset='utf8',cursorclass = pymysql.cursors.DictCursor)
  
     cursor = db.cursor()
 
@@ -36,7 +36,7 @@ def get_data(index_news):
     index = index1[0]['comment_num']
     
     print("正在解析数据...")
-    
+
     for n in range(1,index):
         
         result = []
@@ -54,12 +54,13 @@ def get_data(index_news):
               
                 result.append(i)
 
-        fo = open("data_full.dat", "a+")
+        fo = open("data_full.dat", "a+", encoding='utf-8')
         #fo = open("/Users/kimmeen/Downloads/P_Weibo/%s"%user_id, "w")
 
         for j in result:
           
            fo.write(j)
+
            fo.write(' ')
      
         fo.write('\n')
@@ -70,10 +71,12 @@ def get_data(index_news):
     print("解析完成!")
 
 if __name__ == '__main__':
-    
-    total_news = 11
+    fotemp = open("data_full.dat", "w", encoding='utf-8')
+    fotemp.close()
+
+    total_news = 1              #在此输入url_database包含的url数量
     print("进程开始...")
-    for index_news in range(1,total_news):
+    for index_news in range(1,total_news+1):
         
         get_data(index_news)
         

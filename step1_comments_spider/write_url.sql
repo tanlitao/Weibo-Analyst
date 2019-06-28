@@ -9,7 +9,7 @@ PRIMARY KEY (weibo_id)
 
 insert into weibo_full_url
 (items_date,weibo_sources,weibo_title,url)
-value(2017,'新闻晨报','大象踩踏','https://weibo.cn/comment/FANLAfmKJ?uid=1314608344&rl=1&page=');
+value(2017,'新闻晨报','大象踩踏','https://weibo.cn/comment/FANLAfmKJ?&uid=1314608344&rl=1&page=');
 
 insert into weibo_full_url
 (items_date,weibo_sources,weibo_title,url)

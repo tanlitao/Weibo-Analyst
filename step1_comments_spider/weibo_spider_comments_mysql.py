@@ -18,12 +18,33 @@ from lxml import etree
 import pymysql
 importlib.reload(sys)
 
-cookie = {"Cookie":"请输入自己的cookies"}
+cookie = {"Cookie":"请填入你自己的微博cookie"}
+
+
+def get_url_num():
+    print("连接Mysql数据库URL_database读取url数量...")
+
+    db0 = pymysql.connect(host='127.0.0.1',port=3306,user='root',password='123456',db='url_database',charset='utf8mb4',cursorclass = pymysql.cursors.DictCursor)
+
+    cursor0 = db0.cursor()
+
+    sql_0 = "select count(*) from weibo_full_url"
+
+    cursor0.execute(sql_0)
+
+    result0 = cursor0.fetchall()
+
+    result = result0[0]['count(*)']
+
+    db0.close()
+
+    return result
+
 
 def get_url(index):
-    print("连接Mysql数据库读入数据...")
+    print("连接Mysql数据库URL_database读入数据...")
 
-    db1 = pymysql.connect(host='127.0.0.1',port=3306,user='root',password='请输入自己的密码',db='URL_database',charset='utf8mb4',cursorclass = pymysql.cursors.DictCursor)
+    db1 = pymysql.connect(host='127.0.0.1',port=3306,user='root',password='123456',db='url_database',charset='utf8mb4',cursorclass = pymysql.cursors.DictCursor)
  
     cursor1 = db1.cursor()
     
@@ -45,8 +66,8 @@ def get_url(index):
 
 def create_table(index):
     
-    db3 = pymysql.connect(host='127.0.0.1',port=3306,user='root',password='请输入自己的密码',db='2017_database',charset='utf8mb4',cursorclass = pymysql.cursors.DictCursor)
-    
+    db3 = pymysql.connect(host='127.0.0.1',port=3306,user='root',password='123456',db='comment_database',charset='utf8mb4',cursorclass = pymysql.cursors.DictCursor)
+
     cursor3 = db3.cursor()
     
     sql_4 = "DROP TABLE IF EXISTS ID" + str(index)
@@ -62,7 +83,7 @@ def create_table(index):
 
 def write_in_database(text1,text2,text3,text4,index):
     
-    db2 = pymysql.connect(host='127.0.0.1',port=3306,user='root',password='请输入自己的密码',db='2017_database',charset='utf8mb4',cursorclass = pymysql.cursors.DictCursor)
+    db2 = pymysql.connect(host='127.0.0.1',port=3306,user='root',password='123456',db='comment_database',charset='utf8mb4',cursorclass = pymysql.cursors.DictCursor)
  
     cursor2 = db2.cursor()
     
@@ -77,13 +98,15 @@ def write_in_database(text1,text2,text3,text4,index):
     
 def get_url_data(base_url,pageNum,word_count,index):
         
-    print("爬虫准备就绪...")
+    print("开始爬取"+str(base_url));
     
     base_url_deal = base_url + '%d'
     
     base_url_final = str(base_url_deal)
 
     for page in range(1,pageNum+1):
+
+        print("第"+str(page)+"页...");
 
         url = base_url_final%(page)
         lxml = requests.get(url, cookies = cookie).content
@@ -111,9 +134,12 @@ def get_url_data(base_url,pageNum,word_count,index):
     print("成功爬取！")
     print("本事件微博信息入库完毕，共%d条"%(word_count-4))
 
+
 if __name__ == '__main__':
-    
-    for index in range(1,10):
+
+    url_num = get_url_num();
+
+    for index in range(1, url_num):   #这里的数量上限为存在于URL_database中的url的数量
         
         create_table(index)
         
